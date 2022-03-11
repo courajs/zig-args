@@ -8,8 +8,7 @@ pub fn parseForCurrentProcess(comptime Spec: type, allocator: std.mem.Allocator,
     // Use argsWithAllocator for portability.
     // All data allocated by the ArgIterator is freed at the end of the function.
     // Data returned to the user is always duplicated using the allocator.
-    var args = try std.process.argsWithAllocator(allocator);
-    defer args.deinit();
+    var args = std.process.ArgIteratorPosix.init();
 
     const executable_name = args.next() orelse {
         try error_handling.process(error.NoExecutableName, Error{
@@ -36,7 +35,7 @@ pub fn parseWithVerbForCurrentProcess(comptime Spec: type, comptime Verb: type, 
     // Use argsWithAllocator for portability.
     // All data allocated by the ArgIterator is freed at the end of the function.
     // Data returned to the user is always duplicated using the allocator.
-    var args = try std.process.argsWithAllocator(allocator);
+    var args = std.process.ArgIteratorPosix.init();
     defer args.deinit();
 
     const executable_name = args.next() orelse {
